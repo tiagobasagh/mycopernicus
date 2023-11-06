@@ -11,3 +11,4 @@ setup(
         "xarray", 
     ],
     setup_requires=["flake8", "black"],
+)
