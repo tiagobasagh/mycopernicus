@@ -6,8 +6,8 @@ from pydap.cas.get_cookies import setup_session
 
 CASURL = 'https://cmems-cas.cls.fr/cas/login'
 DATABASE = ['my', 'nrt']
-
 SESSION = None
+
 
 def init_session(usr=None, pwd=None, get_session=False):
     """
@@ -17,13 +17,14 @@ def init_session(usr=None, pwd=None, get_session=False):
     get_session: nos devuelve la sesion en caso de que querramos. Esto nos
     sirve por si necesitamos multiples sesiones en paralelo.
     """
+
     session = setup_session(CASURL, usr, pwd)  
     session.cookies.set("CASTGC", session.cookies.get_dict()['CASTGC'])  
-    SESSION = session
-    
     if get_session:
         return session
-    
+    else:
+        global SESSION
+        SESSION = session
     return None
 
 
@@ -33,7 +34,6 @@ def get_datastore(dataset_id, session=None):
     """
     if not session:
         session = SESSION
-
     url = f'https://{DATABASE[0]}.cmems-du.eu/thredds/dodsC/{dataset_id}'
     try:
         data_store = xr.backends.PydapDataStore(open_url(url, session=session))
