@@ -65,5 +65,12 @@ def copernicus_to_datetime(time, unit=None, unit_format=None):
     else:
         times = [time_zero + float_to_timedelta(t) for t in time]
         return np.asarray(times)
+    
+
+def datetime_to_copernicus(time, unit=None, unit_format=None):
+    t0 = timezero(unit, unit_format) if unit else smos_timezero()
+    ts = (time - t0).total_seconds()
+    return ts/60/60/24
+
 
 
